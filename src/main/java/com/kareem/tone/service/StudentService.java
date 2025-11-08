@@ -2,7 +2,9 @@ package com.kareem.tone.service;
 
 import com.kareem.tone.dto.StudentRequestDto;
 import com.kareem.tone.dto.StudentResponseDto;
+import com.kareem.tone.model.Course;
 import com.kareem.tone.model.Student;
+import com.kareem.tone.repository.CourseRepository;
 import com.kareem.tone.repository.StudentRepository;
 import com.kareem.tone.util.StudentMapper;
 import org.springframework.data.domain.Page;
@@ -10,16 +12,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
     private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
     private final StudentMapper studentMapper;
 
-    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper) {
+    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper , CourseRepository courseRepository) {
         this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
         this.studentMapper = studentMapper;
+
     }
 
     public List<StudentResponseDto> getAllStudents() {
@@ -78,5 +84,18 @@ public class StudentService {
         }
         return pageResult.map(studentMapper::toDTO);
     }
+
+    public StudentResponseDto assignCourses(Long studentId, List<Long> courseIds){
+        Student student = studentRepository.findById(studentId).orElseThrow(
+                () -> new RuntimeException("Student with id: " + studentId + " not found")
+        );
+
+        List<Course> courses = courseRepository.findAllById(courseIds);
+
+        student.getCourses().addAll(courses);
+        studentRepository.save(student);
+        return studentMapper.toDTO(student);
+    }
+
 
 }

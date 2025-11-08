@@ -1,4 +1,5 @@
 package com.kareem.tone.controller;
+import com.kareem.tone.dto.CourseRequestDto;
 import com.kareem.tone.dto.StudentRequestDto;
 import com.kareem.tone.dto.StudentResponseDto;
 import com.kareem.tone.service.StudentService;
@@ -7,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -56,5 +58,11 @@ public class StudentController {
     @GetMapping("/{id}")
     public StudentResponseDto getStudentById(@PathVariable Long id) {
         return studentService.getStudentById(id);
+    }
+
+    @PostMapping("/{id}/courses")
+    public ResponseEntity<StudentResponseDto> assignCourses(@PathVariable Long id,
+                                                           @RequestBody List<Long> courseIds) {
+        return ResponseEntity.ok(studentService.assignCourses(id, courseIds));
     }
 }
