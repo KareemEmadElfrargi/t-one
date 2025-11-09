@@ -2,6 +2,7 @@ package com.kareem.tone.controller;
 
 import com.kareem.tone.dto.EnrollmentRequestDto;
 import com.kareem.tone.dto.EnrollmentResponseDto;
+import com.kareem.tone.dto.StatisticsDto;
 import com.kareem.tone.model.Enrollment;
 import com.kareem.tone.service.EnrollmentService;
 import org.springframework.http.ResponseEntity;
@@ -32,16 +33,19 @@ public class EnrollmentController {
         return ResponseEntity.ok(enrollmentService.getGradesByCourse(courseId));
     }
     @GetMapping("/student/{studentId}/average")
-    public ResponseEntity<Double> getStudentAverageGrade(@PathVariable("studentId") Long studentId) {
-        return ResponseEntity.ok(enrollmentService.getStudentAverageGrade(studentId));
+    public ResponseEntity<StatisticsDto> getStudentAverageGrade(@PathVariable("studentId") Long studentId) {
+        double average = enrollmentService.getStudentAverageGrade(studentId);
+        return ResponseEntity.ok(new StatisticsDto("average",average,studentId,null));
     }
     @GetMapping("/course/{courseId}/highest")
-    public ResponseEntity<Double> getCourseHighestGrade(@PathVariable("courseId") Long courseId) {
-        return ResponseEntity.ok(enrollmentService.getHighestGradeInCourse(courseId));
+    public ResponseEntity<StatisticsDto> getCourseHighestGrade(@PathVariable("courseId") Long courseId) {
+        double highest = enrollmentService.getHighestGradeInCourse(courseId);
+        return ResponseEntity.ok(new StatisticsDto("highest",highest,null,courseId));
     }
     @GetMapping("/course/{courseId}/student/{studentId}/rank")
-    public ResponseEntity<Integer> getStudentRank(@PathVariable("courseId") Long courseId,
+    public ResponseEntity<StatisticsDto> getStudentRank(@PathVariable("courseId") Long courseId,
                                                   @PathVariable("studentId") Long studentId) {
-        return ResponseEntity.ok(enrollmentService.getStudentRankInCourse(courseId, studentId));
+        int rank = enrollmentService.getStudentRankInCourse(courseId, studentId);
+        return ResponseEntity.ok(new StatisticsDto("rank",(double)rank,studentId,courseId));
     }
 }
