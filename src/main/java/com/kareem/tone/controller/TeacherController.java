@@ -1,8 +1,10 @@
 package com.kareem.tone.controller;
 
+import com.kareem.tone.dto.CourseResponseDto;
 import com.kareem.tone.dto.TeacherRequestDto;
 import com.kareem.tone.dto.TeacherResponseDto;
 import com.kareem.tone.service.TeacherService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +37,16 @@ public class TeacherController {
     @DeleteMapping("/{id}")
     public void deleteTeacher(@PathVariable Long id) {
         teacherService.deleteTeacher(id);
+    }
+    @PostMapping("/{id}/courses")
+    public ResponseEntity<TeacherResponseDto> assignCourses(@PathVariable("id") Long teacherId,
+                                                            @RequestBody List<Long> courseIds) {
+        return ResponseEntity.ok(teacherService.assignCoursesToTeacher(teacherId, courseIds));
+    }
+
+    @GetMapping("/{id}/courses")
+    public List<CourseResponseDto> getCoursesForTeacher(@PathVariable("id") Long teacherId) {
+        return teacherService.getCoursesForTeacher(teacherId);
     }
 
 }

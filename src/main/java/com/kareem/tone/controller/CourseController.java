@@ -43,4 +43,6 @@ public class CourseController {
     public ResponseEntity<CourseWithStudentsDto> getCourseWithStudent(@PathVariable Long id){
         return ResponseEntity.ok(courseService.getCourseWithStudents(id));
     }
+
+
 }

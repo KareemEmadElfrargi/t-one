@@ -1,6 +1,7 @@
 package com.kareem.tone.model;
 
 public enum Role {
-    USER,
-    ADMIN
+    ADMIN,
+    TEACHER,
+    STUDENT
 }
