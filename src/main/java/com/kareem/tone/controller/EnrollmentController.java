@@ -3,7 +3,6 @@ package com.kareem.tone.controller;
 import com.kareem.tone.dto.EnrollmentRequestDto;
 import com.kareem.tone.dto.EnrollmentResponseDto;
 import com.kareem.tone.dto.StatisticsDto;
-import com.kareem.tone.model.Enrollment;
 import com.kareem.tone.service.EnrollmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
